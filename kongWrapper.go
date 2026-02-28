@@ -6,10 +6,11 @@ package kongWrapper
 
 import (
 	"fmt"
-	"github.com/alecthomas/kong"
-	kongyaml "github.com/alecthomas/kong-yaml"
 	"os"
 	"path"
+
+	"github.com/alecthomas/kong"
+	kongyaml "github.com/alecthomas/kong-yaml"
 )
 
 // HasConfig needs to implement a method called GetConfigPath
@@ -21,18 +22,18 @@ type HasConfig interface {
 // Parse takes a struct type that reflects the config structure you want to load.
 // The second argument is an env variable with the path to a config file.
 // The struct type has to implement the HasConfig interface.
-func Parse(cli HasConfig, configEnv string) error {
+func Parse(cli HasConfig, configEnv string) (*kong.Context, error) {
 
 	// create new parser for the cli struct
 	parser, err := kong.New(cli)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// parse cli arguments
 	_, err = parser.Parse(os.Args[1:])
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	// get config path from cli
@@ -48,17 +49,17 @@ func Parse(cli HasConfig, configEnv string) error {
 	if configPath != "" {
 		parser, err = fromFileEnding(cli, configPath)
 		if err != nil {
-			return err
+			return nil, err
 		}
 	}
 
 	// reparse cli arguments to overwrite config file
-	_, err = parser.Parse(os.Args[1:])
+	ctx, err := parser.Parse(os.Args[1:])
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	return nil
+	return ctx, nil
 }
 
 // fromFileEnding creates a new kong parser based on file ending
