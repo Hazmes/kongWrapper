@@ -1,4 +1,4 @@
-// Package config wraps alecthoms kong to provide some utility around it.
+// Package config wraps alecthomas kong to provide some utility around it.
 // It allows to read in config through either command line or a config file.
 // The config file can be provided via command line or env variable.
 // Hieararchy: CLI <-- configPathCLI <-- configPathENV
@@ -12,13 +12,15 @@ import (
 	"path"
 )
 
+// HasConfig needs to implement a method called GetConfigPath
+// GetConfigPath should return the field in the CLI definition representing a path to a config
 type HasConfig interface {
 	GetConfigPath() string
 }
 
-// Parse takes a struct type that reflects the config structure you want to load
-// The second argument is an env variable with the path to a config file
-// The struct type has to implemen the HasConfig interface
+// Parse takes a struct type that reflects the config structure you want to load.
+// The second argument is an env variable with the path to a config file.
+// The struct type has to implement the HasConfig interface.
 func Parse(cli HasConfig, configEnv string) error {
 
 	// create new parser for the cli struct
