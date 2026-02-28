@@ -1,4 +1,4 @@
-module github.com/Hazmes/kongWrapper
+module github.com/Hazmes/kongWrapper/v2
 
 go 1.25.0
 
