@@ -1,4 +1,4 @@
-// Package config wraps alecthomas kong to provide some utility around it.
+// Package kongWrapper wraps alecthomas/kong to provide some utility around it.
 // It allows to read in config through either command line or a config file.
 // The config file can be provided via command line or env variable.
 // Hieararchy: CLI <-- configPathCLI <-- configPathENV
